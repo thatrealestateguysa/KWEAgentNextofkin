@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KW Explore — Agent Emergency Contacts</title>
+  <meta name="description" content="Agent Emergency Contacts form for KW Explore." />
+  <link rel="icon" href="assets/kw-explore-red.png" />
+  <style>
+    :root {
+      --kw-red: #D40511; /* KW Explore red */
+      --bg: #0f0f10;
+      --card: #17181a;
+      --text: #ffffff;
+      --muted: #b9c0c8;
+      --ok: #22c55e;
+      --err: #ef4444;
+      --border: #2a2c31;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 16px;
+      border-bottom: 1px solid var(--border);
+      background: #111214;
+    }
+    header img { height: 40px; width: auto; }
+    header h1 { margin: 0; font-size: 20px; letter-spacing: 0.3px; font-weight: 800; }
+    .wrap {
+      max-width: 960px;
+      margin: 24px auto;
+      padding: 0 16px 40px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    h2 { margin: 0 0 8px; }
+    p.sub { margin: 0 0 18px; color: var(--muted); }
+    form {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+    fieldset {
+      grid-column: 1 / -1;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    legend { color: var(--muted); padding: 0 8px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      background: #101214;
+      color: var(--text);
+      border-radius: 10px;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: var(--kw-red); }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    .col-12 { grid-column: span 12; }
+    .row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .radios { display: inline-flex; gap: 16px; align-items: center; }
+    .radio { display: inline-flex; gap: 8px; align-items: center; }
+    .actions { display: flex; gap: 12px; margin-top: 8px; }
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.primary { background: var(--kw-red); color: white; }
+    button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .notice { margin-top: 16px; padding: 12px; border-radius: 10px; display: none; }
+    .notice.ok { background: #052e1a; color: #b7f7c2; border: 1px solid #0f9f4f; }
+    .notice.err { background: #3b0a0a; color: #ffd1d1; border: 1px solid #d33; }
+    .required { color: var(--kw-red); }
+    footer { color: var(--muted); text-align: center; padding: 24px 16px; border-top: 1px solid var(--border); }
+    a { color: var(--kw-red); }
+    @media (max-width: 720px) {
+      .col-6, .col-4 { grid-column: span 12; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="assets/kw-explore-red.png" alt="KW Explore Logo" />
+    <h1>KW EXPLORE — Agent Emergency Contacts</h1>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+      <h2>Complete the form</h2>
+      <p class="sub">All <span class="required">*</span> fields are required. Data writes to the secure Google Sheet.</p>
+
+      <form id="contactForm" novalidate>
+        <fieldset>
+          <legend>Agent Details</legend>
+          <div class="row">
+            <div class="col-6">
+              <label for="agentName">Agent Name <span class="required">*</span></label>
+              <input id="agentName" name="agentName" type="text" required />
+            </div>
+            <div class="col-6">
+              <label for="agentSurname">Agent Surname <span class="required">*</span></label>
+              <input id="agentSurname" name="agentSurname" type="text" required />
+            </div>
+            <div class="col-6">
+              <label for="agentNumber">Agent Number <span class="required">*</span></label>
+              <input id="agentNumber" name="agentNumber" type="tel" inputmode="tel" autocomplete="tel" required
+                    pattern="^[+0-9][0-9\s\-()]{6,}$" title="Enter a valid phone number" />
+            </div>
+            <div class="col-6">
+              <label for="agentEmail">Agent Email <span class="required">*</span></label>
+              <input id="agentEmail" name="agentEmail" type="email" autocomplete="email" required />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Emergency Contact 1 (Required)</legend>
+          <div class="row">
+            <div class="col-4">
+              <label for="ec1Name">Name <span class="required">*</span></label>
+              <input id="ec1Name" name="ec1Name" type="text" required />
+            </div>
+            <div class="col-4">
+              <label for="ec1Number">Number <span class="required">*</span></label>
+              <input id="ec1Number" name="ec1Number" type="tel" inputmode="tel" required
+                    pattern="^[+0-9][0-9\s\-()]{6,}$" title="Enter a valid phone number" />
+            </div>
+            <div class="col-4">
+              <label for="ec1Relation">Relation <span class="required">*</span></label>
+              <input id="ec1Relation" name="ec1Relation" type="text" placeholder="e.g., Spouse, Parent" required />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Emergency Contact 2 (Required)</legend>
+          <div class="row">
+            <div class="col-4">
+              <label for="ec2Name">Name <span class="required">*</span></label>
+              <input id="ec2Name" name="ec2Name" type="text" required />
+            </div>
+            <div class="col-4">
+              <label for="ec2Number">Number <span class="required">*</span></label>
+              <input id="ec2Number" name="ec2Number" type="tel" inputmode="tel" required
+                    pattern="^[+0-9][0-9\s\-()]{6,}$" title="Enter a valid phone number" />
+            </div>
+            <div class="col-4">
+              <label for="ec2Relation">Relation <span class="required">*</span></label>
+              <input id="ec2Relation" name="ec2Relation" type="text" placeholder="e.g., Sibling, Friend" required />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Medical Aid</legend>
+          <div class="radios" role="radiogroup" aria-labelledby="medicalAidLabel">
+            <label class="radio">
+              <input type="radio" name="medicalAid" value="Yes" required />
+              <span>Yes</span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="medicalAid" value="No" required />
+              <span>No</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="primary" type="submit" id="submitBtn">Submit</button>
+          <button class="ghost" type="reset">Reset</button>
+        </div>
+
+        <div id="ok" class="notice ok">Saved. Thank you!</div>
+        <div id="err" class="notice err"></div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    © <span id="year"></span> KW Explore — Where Entrepreneurs Thrive.
+  </footer>
+
+  <script>
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycby5QSkUfm87XLYCkjBvC0zSFUYcdtEKT0-TFRpFSTNvM8x8b0nTMo0eqlwVyZrnYHGi/exec";
+    const form = document.getElementById('contactForm');
+    const ok = document.getElementById('ok');
+    const err = document.getElementById('err');
+    const submitBtn = document.getElementById('submitBtn');
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Client-side required check helper
+    function validateForm() {
+      const requiredIds = [
+        'agentName','agentSurname','agentNumber','agentEmail',
+        'ec1Name','ec1Number','ec1Relation',
+        'ec2Name','ec2Number','ec2Relation'
+      ];
+      let bad = [];
+      for (const id of requiredIds) {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) bad.push(id);
+        if (el.getAttribute('pattern')) {
+          const re = new RegExp(el.getAttribute('pattern'));
+          if (!re.test(el.value.trim())) bad.push(id);
+        }
+      }
+      const med = new FormData(form).get('medicalAid');
+      if (!med) bad.push('medicalAid');
+      if (bad.length) {
+        return 'Please complete all required fields correctly.';
+      }
+      return null;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ok.style.display = 'none';
+      err.style.display = 'none';
+
+      const validationError = validateForm();
+      if (validationError) {
+        err.textContent = validationError;
+        err.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving…';
+
+      // Gather data
+      const fd = new FormData(form);
+      const data = Object.fromEntries(fd.entries());
+
+      try {
+        const res = await fetch(BACKEND_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json().catch(() => ({ ok: false, message: 'Invalid server response.' }));
+        if (json && json.ok) {
+          ok.style.display = 'block';
+          form.reset();
+        } else {
+          err.textContent = (json && json.message) || 'Failed to save.';
+          err.style.display = 'block';
+        }
+      } catch (ex) {
+        err.textContent = ex && ex.message ? ex.message : 'Network error.';
+        err.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit';
+      }
+    });
+  </script>
+</body>
+</html>
